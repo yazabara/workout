@@ -1,5 +1,30 @@
 @import "../variables";
 
+.fa-vk {
+  color: $vk !important;
+}
+.fa-facebook {
+  color: $facebook !important;
+}
+.fa-google {
+  color: $googlePlus !important;
+}
+.fa-instagram {
+  color: $instagram !important;
+}
+
+.fa-pinterest {
+  color: $pinterest !important;
+}
+
+.fa-pinterest:hover {
+  color: $pinterest !important;
+}
+
+.fa-twitter-square {
+  color: $twitter !important;
+}
+
 .social-links {
 	list-style-type: none;
 	li {
@@ -11,28 +36,6 @@
 		}
 		.fa:hover {
 			opacity: 1;
-		}
-		.fa-vk {
-			color: $vk
-		}
-		.fa-facebook {
-			color: $facebook;
-		}
-		.fa-google {
-			color: $googlePlus;
-		}
-		.fa-instagram {
-			color: $instagram;
-		}
-
-		.fa-pinterest {
-			color: $pinterest;
-		}
-		.fa-pinterest:hover {
-			color: $pinterest;
-		}
-		.fa-twitter-square {
-			color: $twitter;
 		}
 	}
 }
