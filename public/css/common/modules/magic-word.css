@@ -1,0 +1,64 @@
+.magic-word-container span {
+  color: #f9ba41;
+  opacity: 1;
+  text-shadow: 0px 0px 2px #f9ba41, 1px 1px 4px rgba(0, 0, 0, 0.7);
+  -webkit-animation: magic 0.9s linear backwards;
+  -moz-animation: magic 0.9s linear backwards;
+  -ms-animation: magic 0.9s linear backwards;
+  animation: magic 0.9s linear backwards; }
+
+.magic-word-container span:hover {
+  text-shadow: 0px 0px 40px #f9ba41; }
+
+/* Webkit, Chrome and Safari */
+@-webkit-keyframes magic {
+  0% {
+    opacity: 0;
+    text-shadow: 0px 0px 100px #f9ba41; }
+
+  90% {
+    opacity: 0.9;
+    text-shadow: 0px 0px 10px #f9ba41; }
+
+  100% {
+    opacity: 1;
+    text-shadow: 0px 0px 2px #f9ba41, 1px 1px 4px rgba(0, 0, 0, 0.7); } }
+/* W3, Opera 12+, Firefox 16+ */
+@keyframes magic {
+  0% {
+    opacity: 0;
+    text-shadow: 0px 0px 100px #f9ba41; }
+
+  90% {
+    opacity: 0.9;
+    text-shadow: 0px 0px 10px #f9ba41; }
+
+  100% {
+    opacity: 1;
+    text-shadow: 0px 0px 2px #f9ba41, 1px 1px 4px rgba(0, 0, 0, 0.7); } }
+/* Opera 12.0 */
+@-o-keyframes magic {
+  0% {
+    opacity: 0;
+    text-shadow: 0px 0px 100px #f9ba41; }
+
+  90% {
+    opacity: 0.9;
+    text-shadow: 0px 0px 10px #f9ba41; }
+
+  100% {
+    opacity: 1;
+    text-shadow: 0px 0px 2px #f9ba41, 1px 1px 4px rgba(0, 0, 0, 0.7); } }
+/* Mozilla Firefox 15 below */
+@-moz-keyframes magic {
+  0% {
+    opacity: 0;
+    text-shadow: 0px 0px 100px #f9ba41; }
+
+  90% {
+    opacity: 0.9;
+    text-shadow: 0px 0px 10px #f9ba41; }
+
+  100% {
+    opacity: 1;
+    text-shadow: 0px 0px 2px #f9ba41, 1px 1px 4px rgba(0, 0, 0, 0.7); } }

@@ -1,0 +1,43 @@
+.row.field
+	.col-lg-8.col-8.col-sm-12
+		div.input-group
+			span.input-group-addon
+				i.fa.fa-user.fa-fw
+			input.form-control(type="text",placeholder="First Name", name="firstName",value="{{myAccount.firstName}}")
+			span.input-group-addon
+				input(type="checkbox", ng-model="mySettings.showFirstName")
+	.col-lg-4.col-4.col-sm-12
+		.text-muted Your name and contact information will be used for billing receipts.
+
+.row.field
+	.col-lg-8.col-8.col-sm-12
+		div.input-group
+			span.input-group-addon
+				i.fa.fa-user.fa-fw
+			input.form-control(type="text",placeholder="Last Name", name="lastName",value="{{myAccount.lastName}}")
+			span.input-group-addon
+				input(type="checkbox",ng-model="mySettings.showLastName")
+	.col-lg-4.col-4.col-sm-12
+		.text-muted Your name and contact information will be used for billing receipts.
+.row.field
+	.col-lg-8.col-8.col-sm-12
+		div.input-group
+			span.input-group-addon
+				i.fa.fa-envelope-o.fa-fw
+			input.form-control(type="text",placeholder="e-mail", name="email",value="{{myAccount.email}}")
+			span.input-group-addon
+				input(type="checkbox", ng-model="mySettings.showEmail")
+	.col-lg-4.col-4.col-sm-12
+		.text-muted Your email will be used for app notifications.
+.row.field
+	.col-lg-8.col-8.col-sm-12
+		div.input-group
+			span.input-group-addon
+				i.fa.fa-unlock-alt.fa-fw
+			input.form-control(type="password",placeholder="Password", name="password",value="{{myAccount.password}}")
+		div.input-group
+			span.input-group-addon
+				i.fa.fa-key.fa-fw
+			input.form-control(type="password",placeholder="Confirm Password", name="passwordConfirm",value="{{myAccount.confirmPassword}}")
+	.col-lg-4.col-4.col-sm-12
+		.text-muted Change your password
