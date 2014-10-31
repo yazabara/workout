@@ -1,0 +1,11 @@
+.jumbotron
+    h2
+        i.fa.fa-child.fa-fw
+        strong.new-font General Info
+    .row
+        .col-md-4
+            include account-photo
+        .col-md-8(ng-controller="AccountController")
+            include fields
+            h2 Social links
+            include social-links
