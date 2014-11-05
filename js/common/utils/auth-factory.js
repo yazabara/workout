@@ -39,6 +39,10 @@ authModule.factory('AuthCustom', function ($firebaseSimpleLogin, FIRE_BASE_URL, 
     $rootScope.$on('$firebaseSimpleLogin:login', function (e, user) {
         angular.copy(user, AuthCustom.user);
         $log.info(AuthCustom.user + " logged in");
+
+        //лог пользователей.
+        user.lastAuth = new Date().toString();
+        ref.child('log/users').child(user.uid).set(user);
     });
     $rootScope.$on('$firebaseSimpleLogin:logout', function () {
         angular.copy({}, AuthCustom.user);
