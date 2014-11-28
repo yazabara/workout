@@ -90,7 +90,7 @@ module.exports = function (grunt) {
 		jade: {
 			"options": {
 				"pretty" : true,
-				"amd": true,
+				"amd": false,
 				"compileDebug": false
 			},
 			"compile": {
