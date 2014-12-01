@@ -5,10 +5,48 @@ var settings = {
 };
 
 var workoutPortalApp = angular.module('workoutPortalApp', [
+	'ngRoute',
 	'firebase',
 	'AuthService'
-]).constant('FIRE_BASE_URL', settings.firebaseUrl);
+], function($routeProvider, $locationProvider) {
+	$routeProvider.when("/login", {
+		controller: "AccountController",
+		templateUrl: "jade/login.jade",
+		resolve: {
+			"currentAuth": ["Auth", function(Auth) {
+				return Auth.$waitForAuth();
+			}]
+		}
+	});
+}).constant('FIRE_BASE_URL', settings.firebaseUrl);
+
+/*workoutPortalApp.run(["$rootScope", "$location", function($rootScope, $location) {
+	$rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+		if (error === "AUTH_REQUIRED") {
+			$location.path("/login");
+		}
+	});
+}]);*/
+/*workoutPortalApp.config(["$routeProvider", function($routeProvider) {
+	$routeProvider.when("/login", {
+		controller: "AccountController",
+		templateUrl: "login.jade",
+		resolve: {
+			"currentAuth": ["Auth", function(Auth) {
+				return Auth.$waitForAuth();
+			}]
+		}
+	});
+}]);*/
+
 workoutPortalApp.controller('AccountController', function ($scope, AuthCustom) {
+	$scope.userEmail = null;
+	$scope.userPassword = null;
+
+	$scope.authWithPassword = function() {
+		AuthCustom.authWithPassword($scope.userEmail, $scope.userPassword);
+	}
+
 	$scope.googleAuth = function () {
 		AuthCustom.authRemote('google');
 	};
@@ -23,7 +61,11 @@ workoutPortalApp.controller('AccountController', function ($scope, AuthCustom) {
 
 	$scope.unauth = function() {
 		AuthCustom.unauth();
-	}
+	};
+
+	$scope.createUser = function() {
+		AuthCustom.createUser();
+	};
 });
 /**
  * WordMagic модуль - для преобразования текста. Каждая буква будет выведенена с определенным делэем.
@@ -80,16 +122,27 @@ angular.module('AuthService', ['firebase']).factory('AuthCustom', function ($fir
 
 	var AuthCustom = {
 		authRemote: function(remote) {
-			auth.$authWithOAuthPopup(remote).then(function(authData) {
-				console.log("Logged in as:", authData.uid);
-			}).catch(function(error) {
-				console.error("Authentication failed:", error);
+			auth.$authWithOAuthPopup(remote);
+		},
+		authWithPassword: function(email, password) {
+			auth.$authWithPassword({
+				email: email,
+				password: password
 			});
 		},
 		unauth: function() {
 			auth.$unauth();
 		},
+		createUser: function(email, password) {
+			auth.$createUser(email, password);
+		},
 		user: {}
 	};
+
+	auth.$onAuth(function(authData) {
+		if (authData) {
+			console.log(authData);
+		}
+	});
 	return AuthCustom;
 });

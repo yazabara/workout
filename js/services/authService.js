@@ -4,16 +4,27 @@ angular.module('AuthService', ['firebase']).factory('AuthCustom', function ($fir
 
 	var AuthCustom = {
 		authRemote: function(remote) {
-			auth.$authWithOAuthPopup(remote).then(function(authData) {
-				console.log("Logged in as:", authData.uid);
-			}).catch(function(error) {
-				console.error("Authentication failed:", error);
+			auth.$authWithOAuthPopup(remote);
+		},
+		authWithPassword: function(email, password) {
+			auth.$authWithPassword({
+				email: email,
+				password: password
 			});
 		},
 		unauth: function() {
 			auth.$unauth();
 		},
+		createUser: function(email, password) {
+			auth.$createUser(email, password);
+		},
 		user: {}
 	};
+
+	auth.$onAuth(function(authData) {
+		if (authData) {
+			console.log(authData);
+		}
+	});
 	return AuthCustom;
 });
