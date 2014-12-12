@@ -9,15 +9,9 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 	'firebase',
 	'AuthService'
 ], function($routeProvider, $locationProvider) {
-	$routeProvider.when("/login", {
-		controller: "AccountController",
-		templateUrl: "jade/login.jade",
-		resolve: {
-			"currentAuth": ["Auth", function(Auth) {
-				return Auth.$waitForAuth();
-			}]
-		}
-	});
+	$routeProvider.when("/workout/login", { controller: "AccountController", templateUrl: "/login.jade" });
+	$routeProvider.otherwise({redirectTo: "/workout/login"});
+	$locationProvider.html5Mode(true);
 }).constant('FIRE_BASE_URL', settings.firebaseUrl);
 
 /*workoutPortalApp.run(["$rootScope", "$location", function($rootScope, $location) {

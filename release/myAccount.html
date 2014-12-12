@@ -1,6 +1,7 @@
 
 <html ng-app="workoutPortalApp">
   <head>
+    <base href="/"/>
     <meta http-equiv="Content-Language"/>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
     <meta name="format-detection" content="telephone=no"/>
@@ -18,14 +19,9 @@
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-resource.min.js"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-route.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-cookies.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-sanitize.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-touch.min.js"></script>
-    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0/angular-animate.min.js"></script>
     <!--Firebase-->
-    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js">
-      <!--Bootstrap-->
-    </script>
+    <script src="https://cdn.firebase.com/js/client/2.0.4/firebase.js"></script>
+    <!--Bootstrap-->
     <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <!--AngularFire-->
     <script src="https://cdn.firebase.com/libs/angularfire/0.9.0/angularfire.min.js"></script>
@@ -71,7 +67,7 @@
               <input type="text" placeholder="slogan" name="slogan" class="form-control"/>
             </div>
           </div>
-          <div ng-controller="AccountController" class="col-md-8">
+          <div class="col-md-8">
             <div class="row field">
               <div class="col-lg-8 col-8 col-sm-12">
                 <div class="input-group"><span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
@@ -122,11 +118,12 @@
             <div class="row">
               <ul class="social-links">
                 <li><a href="#" ng-click="googleAuth()"><i class="fa fa-google fa-fw"></i></a></li>
-                <li><a href="#"><i class="fa fa-instagram fa-fw"></i></a></li>
+                <li><a href="#" ng-click="githubAuth()"><i class="fa fa-github fa-fw"></i></a></li>
                 <li><a href="#" ng-click="facebookAuth()"><i class="fa fa-facebook fa-fw"></i></a></li>
                 <li><a href="#"><i class="fa fa-vk fa-fw"></i></a></li>
                 <li><a href="#"><i class="fa fa-pinterest fa-fw"></i></a></li>
                 <li><a href="#"><i class="fa fa-twitter-square fa-fw"></i></a></li>
+                <li><a href="#"><i class="fa fa-instagram fa-fw"></i></a></li>
               </ul>
             </div>
           </div>
