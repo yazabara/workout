@@ -9,58 +9,72 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 	'firebase',
 	'AuthService'
 ], function($routeProvider, $locationProvider) {
-	$routeProvider.when("/workout/login", { controller: "AccountController", templateUrl: "/login.jade" });
-	$routeProvider.otherwise({redirectTo: "/workout/login"});
-	$locationProvider.html5Mode(true);
-}).constant('FIRE_BASE_URL', settings.firebaseUrl);
-
-/*workoutPortalApp.run(["$rootScope", "$location", function($rootScope, $location) {
-	$rootScope.$on("$routeChangeError", function(event, next, previous, error) {
-		if (error === "AUTH_REQUIRED") {
-			$location.path("/login");
-		}
-	});
-}]);*/
-/*workoutPortalApp.config(["$routeProvider", function($routeProvider) {
-	$routeProvider.when("/login", {
-		controller: "AccountController",
-		templateUrl: "login.jade",
+	$routeProvider.when("/workout/login", {
+		controller: "LoginController",
+		templateUrl: "/login.jade",
 		resolve: {
-			"currentAuth": ["Auth", function(Auth) {
-				return Auth.$waitForAuth();
+			"currentAuth": ["AuthCustom", function(AuthCustom) {
+				return AuthCustom.$waitForAuth();
 			}]
 		}
 	});
-}]);*/
+	$routeProvider.when("/workout/profile", {
+		controller: "ProfileController",
+		templateUrl: "/profile.jade",
+		resolve: {
+			"currentAuth": ["AuthCustom", function(AuthCustom) {
+				return AuthCustom.$requireAuth();
+			}]
+		}
+	});
+	$routeProvider.otherwise({redirectTo: "/workout/profile"});
+	$locationProvider.html5Mode(true);
+}).constant('FIRE_BASE_URL', settings.firebaseUrl);
 
-workoutPortalApp.controller('AccountController', function ($scope, AuthCustom) {
+workoutPortalApp.run(["$rootScope", "$location", function($rootScope, $location) {
+	$rootScope.$on("$routeChangeError", function(event, next, previous, error) {
+		if (error === "AUTH_REQUIRED") {
+			$location.path("/workout/login");
+		}
+	});
+}]);
+workoutPortalApp.controller('LoginController', ['$scope', 'AuthCustom', '$location', function ($scope, AuthCustom, $location) {
 	$scope.userEmail = null;
 	$scope.userPassword = null;
 
 	$scope.authWithPassword = function() {
-		AuthCustom.authWithPassword($scope.userEmail, $scope.userPassword);
+		AuthCustom.$authWithPassword({
+			email: $scope.userEmail,
+			password: $scope.userPassword
+		}).then(function(authData) {
+			$location.path("/workout/profile");
+		});
 	}
 
 	$scope.googleAuth = function () {
-		AuthCustom.authRemote('google');
+		AuthCustom.$authWithOAuthPopup('google').then(function(authData) {
+			$location.path("/workout/profile");
+		});
 	};
 
 	$scope.facebookAuth = function () {
-		AuthCustom.authRemote('facebook');
+		AuthCustom.$authWithOAuthPopup('facebook').then(function(authData) {
+			$location.path("/workout/profile");
+		});
 	};
 
 	$scope.githubAuth = function () {
-		AuthCustom.authRemote('github');
+		AuthCustom.$authWithOAuthPopup('github').then(function(authData) {
+			$location.path("/workout/profile");
+		});
 	};
-
-	$scope.unauth = function() {
-		AuthCustom.unauth();
-	};
-
-	$scope.createUser = function() {
-		AuthCustom.createUser();
-	};
-});
+}]);
+workoutPortalApp.controller('ProfileController', ['$scope', 'AuthCustom', '$route', function ($scope, AuthCustom, $route) {
+    $scope.logout = function() {
+        AuthCustom.$unauth();
+        $route.reload();
+    }
+}]);
 /**
  * WordMagic модуль - для преобразования текста. Каждая буква будет выведенена с определенным делэем.
  * magic-word.scss(css) - обязательно @keyframes magic.
@@ -110,33 +124,8 @@ angular.module('yazabara.ScrollToItem', []).directive('scrollToItem', function (
 		}
 	}
 });
-angular.module('AuthService', ['firebase']).factory('AuthCustom', function ($firebaseAuth, FIRE_BASE_URL, $rootScope, $log) {
+angular.module('AuthService', ['firebase']).service('AuthCustom', function ($firebaseAuth, FIRE_BASE_URL) {
 	var ref = new Firebase(FIRE_BASE_URL);
 	var auth = $firebaseAuth(ref);
-
-	var AuthCustom = {
-		authRemote: function(remote) {
-			auth.$authWithOAuthPopup(remote);
-		},
-		authWithPassword: function(email, password) {
-			auth.$authWithPassword({
-				email: email,
-				password: password
-			});
-		},
-		unauth: function() {
-			auth.$unauth();
-		},
-		createUser: function(email, password) {
-			auth.$createUser(email, password);
-		},
-		user: {}
-	};
-
-	auth.$onAuth(function(authData) {
-		if (authData) {
-			console.log(authData);
-		}
-	});
-	return AuthCustom;
+	return auth;
 });

@@ -1,13 +1,14 @@
 //extends layouts/layout
 
-block container
-    .login-wrapper.img-mask(ng-controller="AccountController")
-        .login-img.blur.background.big-image
-        .container
-            .fields.login-fileds
-                .header-text
-                    h1
-                        i.fa.fa-child.fa-fw
-                        strong.new-font Training with me
-                include pages/login/loginFileds
-block footer-block
+div(ng-controller="LoginController")
+    block container
+        .login-wrapper.img-mask
+            .login-img.blur.background.big-image
+            .container
+                .fields.login-fileds
+                    .header-text
+                        h1
+                            i.fa.fa-child.fa-fw
+                            strong.new-font Training with me
+                    include pages/login/loginFileds
+    block footer-block
