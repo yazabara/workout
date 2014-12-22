@@ -9,7 +9,7 @@ workoutPortalApp.controller('LoginController', ['$scope', 'AuthCustom', '$locati
 		}).then(function(authData) {
 			$location.path("/workout/profile");
 		});
-	}
+	};
 
 	$scope.googleAuth = function () {
 		AuthCustom.$authWithOAuthPopup('google').then(function(authData) {

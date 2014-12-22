@@ -2,5 +2,5 @@ workoutPortalApp.controller('ProfileController', ['$scope', 'AuthCustom', '$rout
     $scope.logout = function() {
         AuthCustom.$unauth();
         $route.reload();
-    }
+    };
 }]);

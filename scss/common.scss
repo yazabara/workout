@@ -1,12 +1,6 @@
 //common
-@import "common/variables";
 @import "common/mixins";
 @import "common/main";
-@import "common/blocks/social-links";
-@import "common/blocks/sticky-footer";
+@import "common/blocks";
 @import "common/fonts";
 @import "common/pages";
-//modules
-@import "common/modules/magic-word";
-@import "common/modules/show-down";
-@import "common/modules/circle-color-effect";
