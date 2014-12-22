@@ -29,6 +29,7 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 	});
 	$routeProvider.otherwise({redirectTo: "/workout/profile"});
 	$locationProvider.html5Mode(true);
+
 }).constant('FIRE_BASE_URL', settings.firebaseUrl);
 
 workoutPortalApp.run(["$rootScope", "$location", function($rootScope, $location) {

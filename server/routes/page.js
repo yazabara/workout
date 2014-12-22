@@ -1,10 +1,12 @@
+/**
+ * Показываем основной layout - и его части, если они есть.
+ */
 define(['app'], function (app) {
 	function renderIndex(req, res){
 		res.render('layouts/layout');
 	}
 	function renderPartials (req, res) {
-		var name = req.params.name;
-		res.render(name);
+		res.render(req.params.name);
 	}
 	return {
 		renderIndex: renderIndex,
