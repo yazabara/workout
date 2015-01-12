@@ -2,8 +2,8 @@ html(ng-app="workoutPortalApp")
     head
         base(href="/")
         block headSection
-            include mainBlocks/head-section
-            include mainBlocks/mixins
+            include common-blocks/head-section
+            include common-blocks/mixins
     body
         block main
             block header-block
@@ -12,4 +12,4 @@ html(ng-app="workoutPortalApp")
             div.view-frame(ng-view)
 
         block footer-block
-            include mainBlocks/footer
+            include common-blocks/footer
