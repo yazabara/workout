@@ -1,0 +1,36 @@
+@import "../variables";
+
+.navigation {
+  background-color: $white;
+  box-shadow: rgba(0, 0, 0, 0.10) 0px 1px 0px 0px;
+
+  .w-nav-link {
+    padding: 10px;
+  }
+
+  .header-btn {
+    margin-top: 24px;
+    float: right;
+  }
+
+  .nav > li > a:hover, .nav > li > a:focus {
+    background-color: transparent !important;
+  }
+
+  .hover-nav:hover {
+    box-shadow: $red 0px 3px 0px 0px inset;
+  }
+
+  .logo-text {
+    margin-top: 24px;
+    color: #1c1c1c;
+    font-size: 27px;
+    padding: 0;
+  }
+}
+
+@include mediaTablet {
+  .logo-text {
+    display: none;
+  }
+}
