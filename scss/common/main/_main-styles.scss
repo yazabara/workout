@@ -5,7 +5,10 @@ body {
   background-image: url("../images/workout/common/bg-white.png");
 
   .content-wrapper {
-    margin-top: 50px;
+    margin-top: 75px;
+    .jumbotron {
+      padding: 10px 60px;
+    }
   }
 }
 

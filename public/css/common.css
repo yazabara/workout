@@ -1,7 +1,9 @@
 body {
   background-image: url("../images/workout/common/bg-white.png"); }
   body .content-wrapper {
-    margin-top: 50px; }
+    margin-top: 75px; }
+    body .content-wrapper .jumbotron {
+      padding: 10px 60px; }
 
 .background {
   position: absolute;
