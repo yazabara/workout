@@ -1,4 +1,11 @@
-h4.new-font Training agenda
-.col-md-4
-
-.col-md-8
+.row(ng-controller="CalendarCtrl")
+    h4.new-font Training agenda
+    .col-md-4
+        .list-group
+            .list-group-item(ng-repeat='event in events')
+                .input-group
+                    input(type="text",class="form-control",placeholder="event title",ng-model='event.title')
+                    span.input-group-btn
+                        button.btn.btn-default(type="button") Go!
+    .col-md-8
+        div(ui-calendar="uiConfig.calendar",class="calendar",ng-model="eventSources")

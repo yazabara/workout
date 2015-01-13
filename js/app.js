@@ -7,7 +7,8 @@ var settings = {
 var workoutPortalApp = angular.module('workoutPortalApp', [
 	'ngRoute',
 	'firebase',
-	'AuthService'
+	'AuthService',
+    'workout.calendar'
 ], function($routeProvider, $locationProvider) {
 
 	$routeProvider.when("/workout/login", {
@@ -20,6 +21,7 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 		}
 	});
     $routeProvider.when("/workout/trainings/new", {
+        controller: "NewTrainingController",
         templateUrl: "/new-training.jade",
         resolve: {
             "currentAuth": ["AuthCustom", function(AuthCustom) {
