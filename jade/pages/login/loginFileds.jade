@@ -9,7 +9,10 @@
             i.fa.fa-unlock-alt.fa-fw
         input.form-control(type="password",placeholder="Password", name="password", ng-model="userPassword")
 .row.field
-    button.btn.btn-default.btn-block(ng-click="authWithPassword()") Login
+    .col-md-6
+        button.btn.btn-default.btn-block(ng-click="authWithPassword()") Login
+    .col-md-6
+        button.btn.btn-default.btn-block(ng-click="createUser()") Register
 .row.field
     ul.social-links
         li
