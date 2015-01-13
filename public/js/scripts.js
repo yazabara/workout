@@ -124,6 +124,11 @@ CalendarModule.controller('CalendarCtrl', function ($scope) {
         }
     };
 
+    /* remove event */
+    $scope.remove = function(index) {
+        $scope.events.splice(index, 1);
+    };
+
     $scope.eventSources = [$scope.events];
 
 });
