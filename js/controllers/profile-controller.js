@@ -1,6 +1,6 @@
-workoutPortalApp.controller('ProfileController', ['$scope', 'AuthCustom', '$route', function ($scope, AuthCustom, $route) {
+workoutPortalApp.controller('ProfileController', ['$scope', 'AuthService', '$route', function ($scope, AuthService, $route) {
     $scope.logout = function() {
-        AuthCustom.$unauth();
+        AuthService.unauth();
         $route.reload();
     };
 }]);

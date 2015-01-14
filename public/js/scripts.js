@@ -7,7 +7,6 @@ var settings = {
 var workoutPortalApp = angular.module('workoutPortalApp', [
 	'ngRoute',
 	'firebase',
-	'AuthService',
     'workout.calendar'
 ], function($routeProvider, $locationProvider) {
 
@@ -15,8 +14,8 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 		controller: "LoginController",
 		templateUrl: "/login.jade",
 		resolve: {
-			"currentAuth": ["AuthCustom", function(AuthCustom) {
-				return AuthCustom.$waitForAuth();
+			"currentAuth": ["AuthService", function(AuthService) {
+				return AuthService.waitForAuth();
 			}]
 		}
 	});
@@ -24,8 +23,8 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
         controller: "NewTrainingController",
         templateUrl: "/new-training.jade",
         resolve: {
-            "currentAuth": ["AuthCustom", function(AuthCustom) {
-                return AuthCustom.$waitForAuth();
+            "currentAuth": ["AuthService", function(AuthService) {
+                return AuthService.waitForAuth();
             }]
         }
     });
@@ -33,8 +32,8 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 		controller: "ProfileController",
 		templateUrl: "/profile.jade",
 		resolve: {
-			"currentAuth": ["AuthCustom", function(AuthCustom) {
-				return AuthCustom.$requireAuth();
+			"currentAuth": ["AuthService", function(AuthService) {
+				return AuthService.requireAuth();
 			}]
 		}
 	});
@@ -52,65 +51,49 @@ workoutPortalApp.run(["$rootScope", "$location", function($rootScope, $location)
 		}
 	});
 }]);
-workoutPortalApp.controller('LoginController', ['$scope', 'AuthCustom', '$location', '$log', 'FIRE_BASE_URL', function ($scope, AuthCustom, $location, $log, FIRE_BASE_URL) {
-	var ref = new Firebase(FIRE_BASE_URL);
+workoutPortalApp.controller('LoginController', ['$scope', 'AuthService', '$location', function ($scope, AuthService, $location) {
 	$scope.userEmail = null;
 	$scope.userPassword = null;
 
 	$scope.authWithPassword = function() {
-		AuthCustom.$authWithPassword({
-			email: $scope.userEmail,
-			password: $scope.userPassword
-		}).then(function(authData) {
-			$log.log(authData.uid + " logged in");
+		AuthService.authWithPassword($scope.userEmail, $scope.userPassword).then(function() {
 			$location.path("/workout/profile");
 		});
 	};
 
 	$scope.createUser = function() {
-		AuthCustom.$createUser($scope.userEmail, $scope.userPassword).then(function() {
-			AuthCustom.$authWithPassword({
-				email: $scope.userEmail,
-				password: $scope.userPassword
-			}).then(function(authData) {
-				$log.log("Create user: " + authData.uid);
-				ref.child('users').child(authData.uid).set({ email: $scope.userEmail });
-				$location.path("/workout/profile");
-			}).catch(function(error) {
-				$log.error(error);
-			});
-		}).catch(function(error) {
-			$log.error(error);
+		AuthService.createUser($scope.userEmail, $scope.userPassword).then(function() {
+			$location.path("/workout/profile");
 		});
 	};
 
 	$scope.googleAuth = function () {
-		AuthCustom.$authWithOAuthPopup('google').then(function(authData) {
+		AuthService.authWithOAuthPopup('google').then(function() {
 			$location.path("/workout/profile");
 		});
 	};
 
 	$scope.facebookAuth = function () {
-		AuthCustom.$authWithOAuthPopup('facebook').then(function(authData) {
+		AuthService.authWithOAuthPopup('facebook').then(function() {
 			$location.path("/workout/profile");
 		});
 	};
 
 	$scope.githubAuth = function () {
-		AuthCustom.$authWithOAuthPopup('github').then(function(authData) {
+		AuthService.authWithOAuthPopup('github').then(function() {
 			$location.path("/workout/profile");
 		});
 	};
 }]);
-workoutPortalApp.controller('NewTrainingController', ['$scope', 'AuthCustom', '$route', function ($scope, AuthCustom, $route) {
+workoutPortalApp.controller('NewTrainingController', ['$scope', 'AuthService', '$route', function ($scope, AuthService, $route) {
     $scope.logout = function() {
-        AuthCustom.$unauth();
+        AuthService.unauth();
         $route.reload();
     };
 }]);
-workoutPortalApp.controller('ProfileController', ['$scope', 'AuthCustom', '$route', function ($scope, AuthCustom, $route) {
+workoutPortalApp.controller('ProfileController', ['$scope', 'AuthService', '$route', function ($scope, AuthService, $route) {
     $scope.logout = function() {
-        AuthCustom.$unauth();
+        AuthService.unauth();
         $route.reload();
     };
 }]);
@@ -153,10 +136,79 @@ CalendarModule.controller('CalendarCtrl', function ($scope) {
 });
 
 
-angular.module('AuthService', ['firebase']).service('AuthCustom', function ($firebaseAuth, FIRE_BASE_URL) {
-	var ref = new Firebase(FIRE_BASE_URL);
-    return $firebaseAuth(ref);
-});
+workoutPortalApp.factory('AuthService', ['$firebaseAuth', 'FIRE_BASE_URL', '$log', '$q', function ($firebaseAuth, FIRE_BASE_URL, $log, $q) {
+    var ref = new Firebase(FIRE_BASE_URL);
+    var auth = $firebaseAuth(ref);
+
+    var authWithPassword = function (email, password) {
+        var deferred = $q.defer();
+        auth.$authWithPassword({
+            email: email,
+            password: password
+        }).then(function (authData) {
+            $log.log(authData.uid + " logged in");
+            deferred.resolve();
+        }).catch(function (error) {
+            $log.error(error);
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
+    var createUser = function (email, password) {
+        var deferred = $q.defer();
+        auth.$createUser(email, password).then(function () {
+            auth.$authWithPassword({
+                email: email,
+                password: password
+            }).then(function (authData) {
+                $log.log("Create user: " + authData.uid);
+                ref.child('users').child(authData.uid).set({email: $scope.userEmail});
+                deferred.resolve();
+            }).catch(function (error) {
+                $log.error(error);
+                deferred.reject(error);
+            });
+        }).catch(function (error) {
+            $log.error(error);
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
+    var authWithOAuthPopup = function (provider) {
+        var deferred = $q.defer();
+        auth.$authWithOAuthPopup(provider).then(function (authData) {
+            $log.log(authData.uid + " logged in");
+            deferred.resolve();
+        }).catch(function (error) {
+            $log.error(error);
+            deferred.reject(error);
+        });
+        return deferred.promise;
+    };
+
+    var waitForAuth = auth.$waitForAuth;
+
+    var requireAuth = auth.$requireAuth;
+
+    var getAuth = auth.$getAuth;
+
+    var unauth = function() {
+        $log.log(getAuth().uid + " logged out");
+        auth.$unauth();
+    };
+
+    return {
+        authWithPassword: authWithPassword,
+        createUser: createUser,
+        authWithOAuthPopup: authWithOAuthPopup,
+        waitForAuth: waitForAuth,
+        requireAuth: requireAuth,
+        getAuth: getAuth,
+        unauth: unauth
+    }
+}]);
 /*
  *  AngularJs Fullcalendar Wrapper for the JQuery FullCalendar
  *  API @ http://arshaw.com/fullcalendar/

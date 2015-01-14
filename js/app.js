@@ -7,7 +7,6 @@ var settings = {
 var workoutPortalApp = angular.module('workoutPortalApp', [
 	'ngRoute',
 	'firebase',
-	'AuthService',
     'workout.calendar'
 ], function($routeProvider, $locationProvider) {
 
@@ -15,8 +14,8 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 		controller: "LoginController",
 		templateUrl: "/login.jade",
 		resolve: {
-			"currentAuth": ["AuthCustom", function(AuthCustom) {
-				return AuthCustom.$waitForAuth();
+			"currentAuth": ["AuthService", function(AuthService) {
+				return AuthService.waitForAuth();
 			}]
 		}
 	});
@@ -24,8 +23,8 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
         controller: "NewTrainingController",
         templateUrl: "/new-training.jade",
         resolve: {
-            "currentAuth": ["AuthCustom", function(AuthCustom) {
-                return AuthCustom.$waitForAuth();
+            "currentAuth": ["AuthService", function(AuthService) {
+                return AuthService.waitForAuth();
             }]
         }
     });
@@ -33,8 +32,8 @@ var workoutPortalApp = angular.module('workoutPortalApp', [
 		controller: "ProfileController",
 		templateUrl: "/profile.jade",
 		resolve: {
-			"currentAuth": ["AuthCustom", function(AuthCustom) {
-				return AuthCustom.$requireAuth();
+			"currentAuth": ["AuthService", function(AuthService) {
+				return AuthService.requireAuth();
 			}]
 		}
 	});
